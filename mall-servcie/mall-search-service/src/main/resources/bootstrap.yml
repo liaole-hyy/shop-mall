@@ -1,0 +1,25 @@
+server:
+  port: 8084
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  application:
+    name: mall-search
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 192.168.5.128:8848
+      discovery:
+        server-addr: 192.168.5.128:8848
+    #Elasticsearch服务配置
+  elasticsearch:
+    rest:
+      uris: http://192.168.5.128:9200
+#日志配置
+logging:
+  pattern:
+    console: "%msg%n"
+  level:
+    org.springframework.data.elasticsearch.core: debug

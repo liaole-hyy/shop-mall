@@ -1,0 +1,50 @@
+server:
+  port: 8093
+spring:
+  application:
+    name: sharding-jdbc
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 192.168.5.128:8848
+      discovery:
+        #Nacos的注册地址
+        server-addr: 192.168.5.128:8848
+  shardingsphere:
+    enabled: true
+    datasource:
+      names: m1
+      m1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.5.128:3306/shard-sphere?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai #&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+        password: 123456
+    sharding:
+      tables:    #逻辑表配置
+        t_order:
+          key-generator:
+            column: order_id
+            type: SNOWFLAKE
+          actual-data-nodes: m1.t_order_$->{1..2}
+          table-strategy: #分片策略
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order_$->{order_id%2+1}
+    props:
+      sql:
+        show: true
+
+#--------------------mybatis配置---------------------
+mybatis-plus:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.liaole.mall.*.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#日志配置
+logging:
+  pattern:
+    console: "%msg%n"

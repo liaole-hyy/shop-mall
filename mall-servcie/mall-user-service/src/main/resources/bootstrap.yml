@@ -1,0 +1,32 @@
+server:
+  port: 8087
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  application:
+    name: mall-user
+  datasource:
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     url: jdbc:mysql://192.168.5.128:3306/shop_user? useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+     username: root
+     password: 123456
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 192.168.5.128:8848
+      discovery:
+        #Nacos的注册地址
+        server-addr: 192.168.5.128:8848
+# ====================MybatisPlus====================
+mybatis-plus:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.liaole.mall.*.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#日志配置
+logging:
+  pattern:
+    console: "%msg%n"
