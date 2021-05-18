@@ -1,0 +1,29 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 192.168.5.128:8848
+      discovery:
+        #Nacos的注册地址
+        server-addr: 192.168.5.128:8848
+    gateway:
+      routes:
+        #秒杀
+        - id: user_route
+          uri: lb://mall-user
+          predicates:
+            - Path=/mall/**
+          filters:
+            - StripPrefix=1
+  redis:
+    host: 192.168.5.128
+    port: 6379
+
+logging:
+  pattern:
+    console: "%msg%n"
